@@ -1,0 +1,29 @@
+version: "2"
+services:
+
+  capybara-mongo:
+    container_name: capybara-mongo 
+    image: "mongo:3.0.2"
+    ports:
+      - "27018:27017"   
+    command: mongod --port 27017
+    networks:
+      - capybara_net
+
+  capybara-site:
+    build: capybara-docker/site
+    container_name: capybara-site
+    ports:
+      - "8080:80"   
+    volumes:
+      - ./site-code:/site-code
+    working_dir: /site-code           
+    links:
+      - capybara-mongo
+    networks:
+      - capybara_net
+  
+networks:
+  capybara_net:
+
+    
